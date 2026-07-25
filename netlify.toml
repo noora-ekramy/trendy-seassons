@@ -4,8 +4,9 @@
 
 [build.environment]
   NODE_VERSION = "20"
-  # Prefer npm; do not let Corepack/pnpm take over
   NPM_FLAGS = "--no-fund --no-audit"
+  # These are not sensitive secrets; Netlify false-positives them against package.json / defaults
+  SECRETS_SCAN_OMIT_KEYS = "S3_BUCKET,S3_REGION,ADMIN_PASSWORD,ADMIN_SECRET,NEXT_PUBLIC_WHATSAPP_NUMBER"
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"

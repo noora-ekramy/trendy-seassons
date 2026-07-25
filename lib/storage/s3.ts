@@ -14,8 +14,8 @@ const accessKeyId =
 const secretAccessKey =
   process.env.S3_SECRET_ACCESS_KEY || process.env.AWS_SECRET_ACCESS_KEY;
 const region =
-  process.env.S3_REGION || process.env.AWS_REGION || "us-east-2";
-export const S3_BUCKET = process.env.S3_BUCKET || "trendy-seasons";
+  process.env.S3_REGION || process.env.AWS_REGION || "auto";
+export const S3_BUCKET = process.env.S3_BUCKET || "uploads";
 
 export const isS3Configured = () =>
   !!(endpoint && accessKeyId && secretAccessKey);
