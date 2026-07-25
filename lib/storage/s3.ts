@@ -6,10 +6,15 @@ import {
   HeadBucketCommand,
 } from "@aws-sdk/client-s3";
 
-const endpoint = process.env.AWS_ENDPOINT_URL_S3;
-const accessKeyId = process.env.AWS_ACCESS_KEY_ID;
-const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
-const region = process.env.AWS_REGION || "us-east-2";
+/** Prefer S3_* names — Netlify reserves AWS_ACCESS_KEY_ID / AWS_SECRET_ACCESS_KEY / AWS_REGION */
+const endpoint =
+  process.env.S3_ENDPOINT_URL || process.env.AWS_ENDPOINT_URL_S3;
+const accessKeyId =
+  process.env.S3_ACCESS_KEY_ID || process.env.AWS_ACCESS_KEY_ID;
+const secretAccessKey =
+  process.env.S3_SECRET_ACCESS_KEY || process.env.AWS_SECRET_ACCESS_KEY;
+const region =
+  process.env.S3_REGION || process.env.AWS_REGION || "us-east-2";
 export const S3_BUCKET = process.env.S3_BUCKET || "trendy-seasons";
 
 export const isS3Configured = () =>
