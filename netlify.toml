@@ -2,5 +2,10 @@
   command = "npm run build"
   publish = ".next"
 
+[build.environment]
+  NODE_VERSION = "20"
+  # Prefer npm; do not let Corepack/pnpm take over
+  NPM_FLAGS = "--no-fund --no-audit"
+
 [[plugins]]
   package = "@netlify/plugin-nextjs"
