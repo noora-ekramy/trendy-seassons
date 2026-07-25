@@ -3,7 +3,7 @@ import { isDatabaseConfigured, query, queryAll, queryOne } from "@/lib/db";
 import { orders } from "@/lib/data/orders";
 
 function mapDbOrder(row: Record<string, unknown>, items: {
-  product_id?: string;
+  product_id?: string | null;
   product_name?: string;
   quantity?: number;
   unit_price?: number;
@@ -57,48 +57,68 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Database not configured" }, { status: 503 });
   }
 
-  const body = await request.json();
-  const order = await queryOne(
-    `INSERT INTO orders (customer_name, phone, address, payment_method, total, status)
-     VALUES ($1, $2, $3, $4, $5, $6)
-     RETURNING *`,
-    [
-      body.customerName ?? body.customer_name ?? "",
-      body.phone ?? "",
-      body.shippingAddress ?? body.address ?? "",
-      body.paymentMethod ?? body.payment_method ?? "",
-      Number(body.total ?? 0),
-      body.status ?? "pending",
-    ]
-  );
-
-  if (!order) return NextResponse.json({ error: "Failed to create order" }, { status: 400 });
-
-  const items = (body.items ?? []) as {
-    productId: string;
-    name: string;
-    quantity: number;
-    price: number;
-  }[];
-
-  for (const item of items) {
-    await query(
-      `INSERT INTO order_items (order_id, product_id, product_name, quantity, unit_price)
-       VALUES ($1, $2, $3, $4, $5)`,
+  try {
+    const body = await request.json();
+    const order = await queryOne(
+      `INSERT INTO orders (customer_name, phone, address, payment_method, total, status)
+       VALUES ($1, $2, $3, $4, $5, $6)
+       RETURNING *`,
       [
-        order.id,
-        item.productId || null,
-        item.name ?? "",
-        item.quantity ?? 1,
-        Number(item.price ?? 0),
+        body.customerName ?? body.customer_name ?? "",
+        body.phone ?? "",
+        body.shippingAddress ?? body.address ?? "",
+        body.paymentMethod ?? body.payment_method ?? "",
+        Number(body.total ?? 0),
+        body.status ?? "pending",
       ]
     );
-  }
 
-  return NextResponse.json(mapDbOrder(order, items.map((i) => ({
-    product_id: i.productId,
-    product_name: i.name,
-    quantity: i.quantity,
-    unit_price: i.price,
-  }))), { status: 201 });
+    if (!order) {
+      return NextResponse.json({ error: "Failed to create order" }, { status: 400 });
+    }
+
+    const items = (body.items ?? []) as {
+      productId?: string;
+      name?: string;
+      quantity?: number;
+      price?: number;
+    }[];
+
+    for (const item of items) {
+      // Store as text so mock IDs (prod-4) and Neon UUIDs both work
+      const productId =
+        typeof item.productId === "string" && item.productId.trim()
+          ? item.productId.trim()
+          : null;
+
+      await query(
+        `INSERT INTO order_items (order_id, product_id, product_name, quantity, unit_price)
+         VALUES ($1, $2, $3, $4, $5)`,
+        [
+          order.id,
+          productId,
+          item.name ?? "",
+          item.quantity ?? 1,
+          Number(item.price ?? 0),
+        ]
+      );
+    }
+
+    return NextResponse.json(
+      mapDbOrder(
+        order,
+        items.map((i) => ({
+          product_id: i.productId ?? null,
+          product_name: i.name,
+          quantity: i.quantity,
+          unit_price: i.price,
+        }))
+      ),
+      { status: 201 }
+    );
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : "Unknown error";
+    console.error("[orders POST]", e);
+    return NextResponse.json({ error: msg }, { status: 500 });
+  }
 }

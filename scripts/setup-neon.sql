@@ -68,7 +68,8 @@ CREATE TABLE IF NOT EXISTS orders (
 CREATE TABLE IF NOT EXISTS order_items (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   order_id UUID NOT NULL REFERENCES orders(id) ON DELETE CASCADE,
-  product_id UUID REFERENCES products(id) ON DELETE SET NULL,
+  -- TEXT so mock IDs (prod-4) and Neon UUIDs both work for order history
+  product_id TEXT,
   product_name TEXT DEFAULT '',
   quantity INTEGER DEFAULT 1,
   unit_price NUMERIC(12, 2) DEFAULT 0
