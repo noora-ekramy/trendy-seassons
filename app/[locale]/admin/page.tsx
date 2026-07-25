@@ -309,7 +309,6 @@ export default function AdminPage() {
         category_id: productForm.category_id || null,
         brand: productForm.brand,
         stock: Number(productForm.stock),
-        condition: (productForm as any).condition || "new",
         is_deal: productForm.is_deal,
         discount_percent: Number(productForm.discount_percent),
         images: productForm.images,
@@ -891,8 +890,8 @@ export default function AdminPage() {
                     </div>
                   </div>
 
-                  {/* Brand / Category / Condition / Deal */}
-                  <div className="grid gap-5 md:grid-cols-4">
+                  {/* Brand / Category / Deal */}
+                  <div className="grid gap-5 md:grid-cols-3">
                     <div className="space-y-2">
                       <Label>{locale === "ar" ? "البراند" : "Brand"}</Label>
                       <Select value={productForm.brand} onValueChange={(val) => setProductForm((f) => ({ ...f, brand: val }))}>
@@ -908,16 +907,6 @@ export default function AdminPage() {
                         <SelectTrigger className="border-secondary focus:border-primary"><SelectValue placeholder={locale === "ar" ? "اختار فئة" : "Select category"} /></SelectTrigger>
                         <SelectContent>
                           {categories.map((cat) => (<SelectItem key={cat.id} value={cat.id}>{locale === "ar" ? cat.name_ar : cat.name_en}</SelectItem>))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div className="space-y-2">
-                      <Label>{locale === "ar" ? "الحالة" : "Condition"}</Label>
-                      <Select value={(productForm as any).condition || "new"} onValueChange={(val) => setProductForm((f) => ({ ...f, condition: val } as any))}>
-                        <SelectTrigger className="border-secondary focus:border-primary"><SelectValue /></SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="new">{locale === "ar" ? "جديد" : "New"}</SelectItem>
-                          <SelectItem value="used">{locale === "ar" ? "مستعمل" : "Used"}</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>

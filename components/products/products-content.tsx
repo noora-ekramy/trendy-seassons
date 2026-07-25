@@ -34,7 +34,6 @@ export function ProductsContent({ initialProducts, categories }: ProductsContent
   const [priceRange, setPriceRange] = useState([1, 200000]);
   const [inStockOnly, setInStockOnly] = useState(false);
   const [searchQuery, setSearchQuery] = useState(initialQuery);
-  const [selectedConditions, setSelectedConditions] = useState<string[]>(["new", "used"]);
 
   useEffect(() => {
     setSearchQuery(initialQuery);
@@ -59,9 +58,6 @@ export function ProductsContent({ initialProducts, categories }: ProductsContent
       const price = p.isDeal ? p.price * (1 - p.discountPercent / 100) : p.price;
       return price >= priceRange[0] && price <= priceRange[1];
     });
-    if (selectedConditions.length > 0) {
-      result = result.filter((p) => selectedConditions.includes((p as any).condition || "new"));
-    }
     if (inStockOnly) result = result.filter((p) => p.stock > 0);
     switch (sortBy) {
       case "price_low":
@@ -77,7 +73,7 @@ export function ProductsContent({ initialProducts, categories }: ProductsContent
         result.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
     }
     return result;
-  }, [initialProducts, selectedCategory, sortBy, priceRange, inStockOnly, searchQuery, categories, selectedConditions]);
+  }, [initialProducts, selectedCategory, sortBy, priceRange, inStockOnly, searchQuery, categories]);
 
   const FilterSidebar = () => (
     <div className="flex flex-col gap-6">
@@ -133,43 +129,6 @@ export function ProductsContent({ initialProducts, categories }: ProductsContent
           />
         </div>
         <p className="text-xs text-muted-foreground">{locale === "ar" ? "من 1 إلى 200,000 ج.م" : "1 to 200,000 EGP"}</p>
-      </div>
-      <div className="flex flex-col gap-3">
-        <Label className="text-sm font-medium">{locale === "ar" ? "الحالة" : "Condition"}</Label>
-        <div className="flex flex-col gap-2">
-          <div className="flex items-center gap-2">
-            <Checkbox
-              id="condition-new"
-              checked={selectedConditions.includes("new")}
-              onCheckedChange={(checked) => {
-                if (checked) {
-                  setSelectedConditions([...selectedConditions, "new"]);
-                } else {
-                  setSelectedConditions(selectedConditions.filter((c) => c !== "new"));
-                }
-              }}
-            />
-            <Label htmlFor="condition-new" className="cursor-pointer text-sm">
-              {locale === "ar" ? "جديد" : "New"}
-            </Label>
-          </div>
-          <div className="flex items-center gap-2">
-            <Checkbox
-              id="condition-used"
-              checked={selectedConditions.includes("used")}
-              onCheckedChange={(checked) => {
-                if (checked) {
-                  setSelectedConditions([...selectedConditions, "used"]);
-                } else {
-                  setSelectedConditions(selectedConditions.filter((c) => c !== "used"));
-                }
-              }}
-            />
-            <Label htmlFor="condition-used" className="cursor-pointer text-sm">
-              {locale === "ar" ? "مستعمل" : "Used"}
-            </Label>
-          </div>
-        </div>
       </div>
       <div className="flex items-center gap-2">
         <Checkbox id="in-stock" checked={inStockOnly} onCheckedChange={(v) => setInStockOnly(v === true)} />

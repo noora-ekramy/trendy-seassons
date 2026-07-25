@@ -32,7 +32,6 @@ function mapDbRow(row: Record<string, unknown>, images: string[]) {
     isDeal: row.is_deal ?? false,
     discountPercent: Number(row.discount_percent ?? 0),
     createdAt: row.created_at ?? "",
-    condition: row.condition ?? "new",
     available: row.available ?? true,
   };
 }
@@ -71,7 +70,6 @@ export async function PUT(
   const price = body.price !== undefined ? Number(body.price) : undefined;
   const brand = body.brand;
   const stock = body.stock !== undefined ? Number(body.stock) : undefined;
-  const condition = body.condition;
   const categoryId = body.category_id;
   const comparePrice = body.compare_price !== undefined ? body.compare_price : undefined;
   const isDeal = body.is_deal;
@@ -83,10 +81,10 @@ export async function PUT(
     const product = await queryOne(
       `INSERT INTO products (
         name, name_en, name_ar, description, description_en, description_ar,
-        price, brand, stock, condition, available, category_id, compare_price,
+        price, brand, stock, available, category_id, compare_price,
         is_deal, discount_percent, specs
       ) VALUES (
-        $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16::jsonb
+        $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15::jsonb
       ) RETURNING *`,
       [
         nameEn || "",
@@ -98,7 +96,6 @@ export async function PUT(
         price ?? 0,
         brand || "",
         stock ?? 0,
-        condition || "new",
         (stock ?? 0) > 0,
         categoryId || null,
         comparePrice != null ? Number(comparePrice) : null,
@@ -125,13 +122,12 @@ export async function PUT(
       brand = COALESCE($6, brand),
       stock = COALESCE($7, stock),
       available = COALESCE($8, available),
-      condition = COALESCE($9, condition),
-      category_id = COALESCE($10, category_id),
-      compare_price = COALESCE($11, compare_price),
-      is_deal = COALESCE($12, is_deal),
-      discount_percent = COALESCE($13, discount_percent),
-      specs = COALESCE($14::jsonb, specs)
-    WHERE id = $15
+      category_id = COALESCE($9, category_id),
+      compare_price = COALESCE($10, compare_price),
+      is_deal = COALESCE($11, is_deal),
+      discount_percent = COALESCE($12, discount_percent),
+      specs = COALESCE($13::jsonb, specs)
+    WHERE id = $14
     RETURNING *`,
     [
       nameEn ?? null,
@@ -142,7 +138,6 @@ export async function PUT(
       brand ?? null,
       stock ?? null,
       stock !== undefined ? stock > 0 : null,
-      condition ?? null,
       categoryId ?? null,
       comparePrice != null ? Number(comparePrice) : null,
       isDeal ?? null,

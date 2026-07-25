@@ -33,7 +33,6 @@ function mapDbRowToProduct(row: Record<string, unknown>, images: string[] = []) 
     isDeal: row.is_deal ?? false,
     discountPercent: Number(row.discount_percent ?? 0),
     createdAt: row.created_at ?? "",
-    condition: row.condition ?? "new",
     available: row.available ?? true,
   };
 }
@@ -62,10 +61,10 @@ export async function POST(request: NextRequest) {
   const product = await queryOne(
     `INSERT INTO products (
       name, name_en, name_ar, description, description_en, description_ar,
-      price, brand, stock, condition, available, category_id, compare_price,
+      price, brand, stock, available, category_id, compare_price,
       is_deal, discount_percent, specs
     ) VALUES (
-      $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16::jsonb
+      $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15::jsonb
     ) RETURNING *`,
     [
       nameEn,
@@ -77,7 +76,6 @@ export async function POST(request: NextRequest) {
       Number(body.price || 0),
       body.brand || "",
       stock,
-      body.condition || "new",
       stock > 0,
       body.category_id || null,
       body.compare_price != null ? Number(body.compare_price) : null,
