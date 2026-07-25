@@ -8,11 +8,26 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   images: {
-    unoptimized: true,
+    formats: ["image/avif", "image/webp"],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1600],
+    imageSizes: [64, 96, 128, 256, 384],
+    minimumCacheTTL: 60 * 60 * 24 * 30,
     remotePatterns: [
-      { protocol: "https", hostname: "*.supabase.co", pathname: "/storage/v1/object/public/**" },
-      { protocol: "https", hostname: "vvmvbkpfcnumcoiqikvx.supabase.co", pathname: "/storage/v1/object/public/**" },
-      { protocol: "https", hostname: "m.media-amazon.com", pathname: "/**" },
+      {
+        protocol: "https",
+        hostname: "*.storage.c-5.us-east-2.aws.neon.tech",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "br-sweet-wind-ayfdzcgt.storage.c-5.us-east-2.aws.neon.tech",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "*.supabase.co",
+        pathname: "/storage/v1/object/public/**",
+      },
     ],
   },
 };

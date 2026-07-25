@@ -66,12 +66,14 @@ export function ProductDetailContent({ product, category, related }: ProductDeta
                 src={
                   allImages[selectedImageIdx] && !allImages[selectedImageIdx].includes("placeholder.svg")
                     ? allImages[selectedImageIdx]
-                    : "/images/product-placeholder.jpg"
+                    : "/images/product-placeholder.webp"
                 }
                 alt={name}
                 fill
                 className="object-cover"
                 priority
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                quality={75}
               />
               {allImages.length > 1 && (
                 <>

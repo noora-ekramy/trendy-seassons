@@ -38,12 +38,14 @@ export function HomeContent({ featured, deals, categories }: HomeContentProps) {
       <section className="relative -mt-14 min-h-[100svh] w-full overflow-hidden sm:-mt-16">
         <div className="absolute inset-0">
           <Image
-            src="/images/hero-summer.jpg"
+            src="/images/hero-summer.webp"
             alt={t("hero_image_alt")}
             fill
             className="object-cover object-[center_22%]"
             priority
+            fetchPriority="high"
             sizes="100vw"
+            quality={75}
           />
           <div className="absolute inset-0 bg-gradient-to-b from-[#FAF7F2]/40 via-[#FAF7F2]/45 to-[#FAF7F2]/90" />
           <div className="absolute inset-0 bg-gradient-to-r from-[#FAF7F2]/35 via-transparent to-[#FAF7F2]/35" />

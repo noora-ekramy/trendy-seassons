@@ -2,7 +2,6 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
-import { Geist, Geist_Mono } from "next/font/google";
 import { Noto_Sans_Arabic } from "next/font/google";
 import { DocumentLocale } from "@/components/document-locale";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -11,23 +10,13 @@ import { AuthProvider } from "@/lib/context/auth-context";
 import { Toaster } from "@/components/ui/sonner";
 import { StorefrontLayout } from "@/components/storefront/storefront-layout";
 import { NavigationProgress } from "@/components/navigation-progress";
-import "../globals.css";
 import { Analytics } from "@vercel/analytics/next";
-
-const geistSans = Geist({
-  subsets: ["latin"],
-  variable: "--font-geist-sans",
-});
-
-const geistMono = Geist_Mono({
-  subsets: ["latin"],
-  variable: "--font-mono",
-});
 
 const notoArabic = Noto_Sans_Arabic({
   subsets: ["arabic"],
   variable: "--font-noto-arabic",
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "500", "600"],
+  display: "swap",
 });
 
 export default async function LocaleLayout({

@@ -1,23 +1,19 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono, Cormorant_Garamond } from "next/font/google";
-import { Analytics } from "@vercel/analytics/next";
+import { Geist, Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
 
 const geistSans = Geist({
   subsets: ["latin"],
   variable: "--font-geist-sans",
-});
-
-const geistMono = Geist_Mono({
-  subsets: ["latin"],
-  variable: "--font-mono",
+  display: "swap",
 });
 
 const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
   variable: "--font-cormorant",
-  weight: ["300", "400", "500", "600"],
+  weight: ["300", "400", "500"],
   style: ["normal", "italic"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -47,7 +43,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${cormorant.variable} font-sans antialiased`}
+        className={`${geistSans.variable} ${cormorant.variable} font-sans antialiased`}
       >
         {children}
       </body>

@@ -137,15 +137,22 @@
   font-family: var(--font-display);
 }
 
-/* Mediterranean site backdrop */
+/* Mediterranean site backdrop — light webp, no fixed attachment (faster on mobile) */
 .storefront-backdrop {
   background-color: oklch(0.975 0.012 85);
   background-image:
-    linear-gradient(to bottom, oklch(0.975 0.012 85 / 0.78), oklch(0.96 0.014 85 / 0.9)),
-    url('/images/mediterranean-bg.jpg');
+    linear-gradient(to bottom, oklch(0.975 0.012 85 / 0.82), oklch(0.96 0.014 85 / 0.92)),
+    url('/images/mediterranean-bg.webp');
   background-size: cover;
   background-position: center top;
-  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-attachment: scroll;
+}
+
+@media (min-width: 1024px) {
+  .storefront-backdrop {
+    background-attachment: fixed;
+  }
 }
 
 .storefront-content-layer {
