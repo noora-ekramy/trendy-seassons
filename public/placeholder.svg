@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" fill="none">
+  <rect width="400" height="400" fill="#FAF7F2"/>
+  <rect width="400" height="400" fill="url(#plaster)" opacity="0.5"/>
+  <path d="M320 40 C280 80 260 120 240 180 C220 240 200 300 180 360" stroke="#5C6B4F" stroke-opacity="0.12" stroke-width="2" fill="none"/>
+  <path d="M340 60 C300 100 290 140 270 200" stroke="#5C6B4F" stroke-opacity="0.08" stroke-width="1.5" fill="none"/>
+  <ellipse cx="340" cy="320" rx="60" ry="20" fill="#8B7355" opacity="0.06"/>
+  <path d="M60 280 Q90 260 120 280 T180 280" stroke="#7D5A47" stroke-opacity="0.1" stroke-width="1" fill="none"/>
+  <defs>
+    <pattern id="plaster" patternUnits="userSpaceOnUse" width="8" height="8">
+      <circle cx="1" cy="1" r="0.5" fill="#E5DDD0" opacity="0.4"/>
+    </pattern>
+  </defs>
+</svg>
